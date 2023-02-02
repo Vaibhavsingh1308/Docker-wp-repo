@@ -42,6 +42,7 @@ jobs:
           mkdir wp-dir
           sudo mv docker-compose.yml /home/ubuntu/wp-dir/
           cd wp-dir/
+          docker-compose down
           docker-compose up -d
         host: 13.234.204.95
         user: ubuntu
