@@ -18,7 +18,7 @@ jobs:
           USER_NAME : ubuntu
       run: |
         echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
-        scp -o StrictHostKeyChecking=no -i private_key docker-compose.yml ${USER_NAME}@${HOSTNAME}:/home/ubuntu/wp-dir
+        scp -o StrictHostKeyChecking=no -i private_key docker-compose.yml ${USER_NAME}@${HOSTNAME}:/home/ubuntu/
     - name: wordpress
       uses: tarunjangra/ssh-remote-cmd@v1
       with:
@@ -40,7 +40,6 @@ jobs:
           sudo chmod +x /usr/local/bin/docker-compose
           docker-compose --version
           mkdir wp-dir
-          cd wp-dir/
           docker-compose up -d
         host: 13.234.204.95
         user: ubuntu
