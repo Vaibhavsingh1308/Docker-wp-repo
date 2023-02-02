@@ -18,7 +18,7 @@ jobs:
           USER_NAME : ubuntu
       run: |
         echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
-        tar -czf data.tar.gz docker-compose.yml/
+        tar -czf data.tar.gz docker-compose.yml
         ls -l
         scp -o StrictHostKeyChecking=no -i private_key data.tar.gz ${USER_NAME}@${HOSTNAME}:/home/ubuntu/data.tar.gz
     - name: wordpress
