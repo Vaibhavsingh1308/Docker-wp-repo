@@ -23,8 +23,8 @@ jobs:
       uses: tarunjangra/ssh-remote-cmd@v1
       with:
         command: |
-          mkdir wordpress/
-          cd wordpress
+          mkdir wordpress
+          cd wordpress/
           sudo apt-get update -y
           sudo apt-get install \
           apt-transport-https \
