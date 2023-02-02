@@ -7,7 +7,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-   
+    - name: Adding Known Hosts
+      run: |
+        mkdir ~/.ssh
+        ssh-keyscan -p 22 -H 3.111.149.234  >> ~/.ssh/known_hosts
     - name: SCP
       env:
           PRIVATE_KEY: ${{ secrets.SSH_KEY  }}
@@ -15,7 +18,7 @@ jobs:
           USER_NAME : ubuntu
       run: |
         echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
-        tar -czf data.tar.gz docker-compose.yml
+        tar -czf data.tar.gz docker-compose.yml/
         ls -l
         scp -o StrictHostKeyChecking=no -i private_key data.tar.gz ${USER_NAME}@${HOSTNAME}:/home/ubuntu/data.tar.gz
     - name: wordpress
