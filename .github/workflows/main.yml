@@ -40,6 +40,7 @@ jobs:
           sudo chmod +x /usr/local/bin/docker-compose
           docker-compose --version
           mkdir wp-dir
+          sudo mv docker-compose.yml /home/ubuntu/wp-dir/
           docker-compose up -d
         host: 13.234.204.95
         user: ubuntu
