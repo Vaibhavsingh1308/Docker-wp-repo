@@ -10,11 +10,11 @@ jobs:
     - name: Adding Known Hosts
       run: |
         mkdir ~/.ssh
-        ssh-keyscan -p 22 -H 13.233.0.104  >> ~/.ssh/known_hosts
+        ssh-keyscan -p 22 -H 13.234.204.95  >> ~/.ssh/known_hosts
     - name: SCP
       env:
           PRIVATE_KEY: ${{ secrets.SSH_KEY  }}
-          HOSTNAME : 13.233.0.104
+          HOSTNAME : 13.234.204.95
           USER_NAME : ubuntu
       run: |
         echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
@@ -42,7 +42,7 @@ jobs:
           sudo chmod +x /usr/local/bin/docker-compose
           docker-compose --version
           docker-compose up -d
-        host: 13.233.0.104
+        host: 13.234.204.95
         user: ubuntu
         key: ${{ secrets.SSH_KEY}}
     
