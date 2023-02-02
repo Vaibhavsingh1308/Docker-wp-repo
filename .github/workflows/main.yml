@@ -18,9 +18,7 @@ jobs:
           USER_NAME : ubuntu
       run: |
         echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
-        tar -czf data.tar.gz docker-compose.yml
-        ls -l
-        scp -o StrictHostKeyChecking=no -i private_key data.tar.gz ${USER_NAME}@${HOSTNAME}:/home/ubuntu/data.tar.gz
+        scp -o StrictHostKeyChecking=no -i private_key docker-compose.yml ${USER_NAME}@${HOSTNAME}:/home/ubuntu/
     - name: wordpress
       uses: tarunjangra/ssh-remote-cmd@v1
       with:
@@ -41,8 +39,6 @@ jobs:
           sudo curl -L "https://github.com/docker/compose/releases/download/1.27.4/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
           sudo chmod +x /usr/local/bin/docker-compose
           docker-compose --version
-          sudo mv /home/ubuntu/data.tar.gz /var/www/html/
-          sudo tar -xvzf /var/www/html/data.tar.gz -C /var/www/
         host: 13.233.0.104
         user: ubuntu
         key: ${{ secrets.SSH_KEY}}
