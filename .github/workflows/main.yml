@@ -43,7 +43,6 @@ jobs:
           docker-compose --version
           sudo mv /home/ubuntu/data.tar.gz /var/www/html/
           sudo tar -xvzf /var/www/html/data.tar.gz -C /var/www/
-          tar -czvf /home/ubuntu/backup_$(date +%Y-%m-%d_%H-%M-%S).tar.gz /var/www/html/
         host: 13.233.0.104
         user: ubuntu
         key: ${{ secrets.SSH_KEY}}
