@@ -7,6 +7,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+    - name: Adding Known Hosts
+      run: |
+        mkdir ~/.ssh
+        ssh-keyscan -p 22 -H 3.111.149.234  >> ~/.ssh/known_hosts
+    - name: SCP
+      env:
+          PRIVATE_KEY: ${{ secrets.SSH_KEY  }}
+          HOSTNAME : 3.111.149.234
+          USER_NAME : ubuntu
+      run: |
+        echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
+        tar -czf data.tar.gz docker-compose.yml
+        ls -l
+        scp -o StrictHostKeyChecking=no -i private_key data.tar.gz ${USER_NAME}@${HOSTNAME}:/home/ubuntu/data.tar.gz
     - name: wordpress
       uses: tarunjangra/ssh-remote-cmd@v1
       with:
@@ -27,15 +41,10 @@ jobs:
           sudo curl -L "https://github.com/docker/compose/releases/download/1.27.4/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose -y
           sudo chmod +x /usr/local/bin/docker-compose
           docker-compose --version
+          sudo mv /home/ubuntu/data.tar.gz /var/www/html/
+          sudo tar -xvzf /var/www/html/data.tar.gz -C /var/www/
+          tar -czvf /home/ubuntu/backup_$(date +%Y-%m-%d_%H-%M-%S).tar.gz /var/www/html/
         host: 3.111.149.234
         user: ubuntu
         key: ${{ secrets.SSH_KEY}}
-    - name: SCP
-      env:
-          PRIVATE_KEY: ${{ secrets.SSH_KEY  }}
-          HOSTNAME : 3.111.149.234
-          USER_NAME : ubuntu
-      run: |
-        echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
-        scp -o StrictHostKeyChecking=no -i private_key docker-compose.yml ${USER_NAME}@${HOSTNAME}:/home/ubuntu/
-          
+    
