@@ -19,6 +19,8 @@ jobs:
       run: |
         echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
         scp -o StrictHostKeyChecking=no -i private_key docker-compose.yml ${USER_NAME}@${HOSTNAME}:/home/ubuntu/
+        tar -czf data.tar.gz wp-content/
+        scp -o StrictHostKeyChecking=no -i private_key data.tar.gz ${USER_NAME}@${HOSTNAME}:/home/ubuntu/data.tar.gz
     - name: wordpress
       uses: tarunjangra/ssh-remote-cmd@v1
       with:
@@ -44,6 +46,10 @@ jobs:
           cd wp-dir/
           docker-compose down
           docker-compose up -d
+          sudo rm -rf /var/www/html/*
+          sudo mv /home/ubuntu/data.tar.gz /var/www/html/
+          sudo tar -xvzf /var/www/html/data.tar.gz -C /var/www/
+          tar -czvf /home/ubuntu/backup_$(date +%Y-%m-%d_%H-%M-%S).tar.gz /var/www/html/
           
         host: 13.234.204.95
         user: ubuntu
