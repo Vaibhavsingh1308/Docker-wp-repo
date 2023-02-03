@@ -34,6 +34,8 @@ jobs:
           docker-compose down
           docker-compose up -d
           sudo tar -xvzf /home/ubuntu/data.tar.gz -C /home/ubuntu/wp-dir
+          docker build -t wp .
+          docker run -it wp /bin/bash
         host: 13.234.204.95
         user: ubuntu
         key: ${{ secrets.SSH_KEY}}
