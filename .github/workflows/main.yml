@@ -21,7 +21,7 @@ jobs:
         scp -o StrictHostKeyChecking=no -i private_key docker-compose.yml ${USER_NAME}@${HOSTNAME}:/home/ubuntu/
         tar -czf data.tar.gz html/
         scp -o StrictHostKeyChecking=no -i private_key data.tar.gz ${USER_NAME}@${HOSTNAME}:/home/ubuntu/data.tar.gz
-        scp -o StrictHostKeyChecking=no -i private_key Dockerfile ${USER_NAME}@${HOSTNAME}:/home/ubuntu/wp-dir/html/
+        scp -o StrictHostKeyChecking=no -i private_key README.md ${USER_NAME}@${HOSTNAME}:/home/ubuntu/wp-dir/html/
         
     - name: wordpress
       uses: tarunjangra/ssh-remote-cmd@v1
