@@ -22,8 +22,6 @@ jobs:
         tar -czf data.tar.gz html/
         scp -o StrictHostKeyChecking=no -i private_key data.tar.gz ${USER_NAME}@${HOSTNAME}:/home/ubuntu/data.tar.gz
         scp -o StrictHostKeyChecking=no -i private_key Dockerfile ${USER_NAME}@${HOSTNAME}:/home/ubuntu/wp-dir/html/
-    - name: Docker build image
-      run: |
         docker build -t wp .
         docker run -it wp /bin/bash
     - name: wordpress
@@ -36,9 +34,7 @@ jobs:
           cd wp-dir/
           docker-compose down
           docker-compose up -d
-          sudo tar -xvzf /home/ubuntu/data.tar.gz -C /home/ubuntu/wp-dir
-          
-          
+          sudo tar -xvzf /home/ubuntu/data.tar.gz -C /home/ubuntu/wp-dir  
         host: 13.234.204.95
         user: ubuntu
         key: ${{ secrets.SSH_KEY}}
