@@ -21,25 +21,7 @@ jobs:
         scp -o StrictHostKeyChecking=no -i private_key docker-compose.yml ${USER_NAME}@${HOSTNAME}:/home/ubuntu/
         tar -czf data.tar.gz html/
         scp -o StrictHostKeyChecking=no -i private_key data.tar.gz ${USER_NAME}@${HOSTNAME}:/home/ubuntu/data.tar.gz
-        
-    - name: wordpress
-      uses: tarunjangra/ssh-remote-cmd@v1
-      with:
-        command: |
-          mkdir wp-dir
-          sudo tar -xvzf /home/ubuntu/data.tar.gz -C /home/ubuntu/wp-dir/
-        host: 13.234.204.95
-        user: ubuntu
-        key: ${{ secrets.SSH_KEY}}
-    - name: SCP
-      env:
-          PRIVATE_KEY: ${{ secrets.SSH_KEY  }}
-          HOSTNAME : 13.234.204.95
-          USER_NAME : ubuntu
-      run: |
-        echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
         scp -o StrictHostKeyChecking=no -i private_key Dockerfile ${USER_NAME}@${HOSTNAME}:/home/ubuntu/wp-dir/html/
-        
     - name: Docker build image
       run: |
         docker build -t wp .
@@ -49,6 +31,7 @@ jobs:
       with:
         command: |
           mkdir wp-dir
+          sudo tar -xvzf /home/ubuntu/data.tar.gz -C /home/ubuntu/wp-dir/
           sudo mv docker-compose.yml /home/ubuntu/wp-dir/
           cd wp-dir/
           docker-compose down
