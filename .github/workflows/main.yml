@@ -39,6 +39,7 @@ jobs:
       run: |
         echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
         scp -o StrictHostKeyChecking=no -i private_key Dockerfile ${USER_NAME}@${HOSTNAME}:/home/ubuntu/wp-dir/
+        cd
         sudo mv /home/ubuntu/wp-dir/Dockerfile /home/ubuntu/wp-dir/html/
     - name: Docker build image
       run: |
