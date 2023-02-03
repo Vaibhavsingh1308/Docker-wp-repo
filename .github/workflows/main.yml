@@ -34,7 +34,7 @@ jobs:
           
           sudo tar -xvzf /home/ubuntu/data.tar.gz -C /home/ubuntu/wp-dir
           cd /home/ubuntu/wp-dir/html
-          docker build -t wp .
+          docker build --no-cache -t wp .
           docker-compose down
           docker-compose up -d
         host: 13.234.204.95
