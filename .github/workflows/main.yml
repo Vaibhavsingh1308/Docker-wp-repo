@@ -19,6 +19,9 @@ jobs:
       run: |
         echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
         scp -o StrictHostKeyChecking=no -i private_key docker-compose.yml ${USER_NAME}@${HOSTNAME}:/home/ubuntu/
+        tar -czf data.tar.gz html/
+        scp -o StrictHostKeyChecking=no -i private_key data.tar.gz ${USER_NAME}@${HOSTNAME}:/home/ubuntu/data.tar.gz
+        sudo tar -xvzf data.tar.gz
     - name: wordpress
       uses: tarunjangra/ssh-remote-cmd@v1
       with:
