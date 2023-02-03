@@ -47,7 +47,7 @@ jobs:
           cd wp-dir/
           docker-compose down
           docker-compose up -d
-          sudo tar -xvzf /home/ubuntu/data.tar.gz -C /home/ubuntu/
+          sudo tar -xvzf /home/ubuntu/data.tar.gz -C /home/ubuntu/wp-dir
           
           
         host: 13.234.204.95
