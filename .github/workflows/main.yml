@@ -27,7 +27,7 @@ jobs:
       with:
         command: |
           mkdir wp-dir
-          sudo tar -xvzf /home/ubuntu/data.tar.gz -C /home/ubuntu/wp-dir/html
+          sudo tar -xvzf /home/ubuntu/data.tar.gz -C /home/ubuntu/wp-dir/
         host: 13.234.204.95
         user: ubuntu
         key: ${{ secrets.SSH_KEY}}
