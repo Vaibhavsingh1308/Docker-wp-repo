@@ -29,6 +29,7 @@ jobs:
           mkdir wp-dir
           sudo tar -xvzf /home/ubuntu/data.tar.gz -C /home/ubuntu/wp-dir/
           sudo mv docker-compose.yml /home/ubuntu/wp-dir/
+          sudo mv Dockerfile /home/ubuntu/wp-dir/html/
           cd wp-dir/
           docker-compose down
           docker-compose up -d
