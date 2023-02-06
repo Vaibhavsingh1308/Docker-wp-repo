@@ -27,12 +27,11 @@ jobs:
       with:
         command: |
           mkdir wp-dir
-          sudo tar -xvzf /home/ubuntu/data.tar.gz -C /home/ubuntu/wp-dir/
           sudo mv docker-compose.yml /home/ubuntu/wp-dir/
           sudo mv Dockerfile /home/ubuntu/wp-dir/html/
           cd wp-dir/
           
-         
+          sudo tar -xvzf /home/ubuntu/data.tar.gz -C /home/ubuntu/wp-dir
           cd /home/ubuntu/wp-dir/html
           docker build --no-cache -t wp .
           docker-compose down
