@@ -34,6 +34,8 @@ jobs:
           
           cd wp-dir/
           sudo tar -xvzf /home/ubuntu/data.tar.gz -C /home/ubuntu/wp-dir/
+          sudo rm -rf wp-content
+          sudo /home/ubuntu/wp-dir/html/* /home/ubuntu/wp-dir/
           
           docker build --no-cache -t wp .
           docker-compose down
