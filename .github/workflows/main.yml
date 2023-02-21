@@ -1,45 +1,44 @@
-name: Deploy WordPress
+name: Deploy to AWS-ECR
 
 on: [push]
-
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: Adding Known Hosts
-      run: |
-        mkdir ~/.ssh
-        ssh-keyscan -p 22 -H 13.234.204.95  >> ~/.ssh/known_hosts
-    - name: SCP
-      env:
-          PRIVATE_KEY: ${{ secrets.SSH_KEY  }}
-          HOSTNAME : 13.234.204.95
-          USER_NAME : ubuntu
-      run: |
-        echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
-        scp -o StrictHostKeyChecking=no -i private_key docker-compose.yml ${USER_NAME}@${HOSTNAME}:/home/ubuntu/
-        tar -czf data.tar.gz html/
-        scp -o StrictHostKeyChecking=no -i private_key data.tar.gz ${USER_NAME}@${HOSTNAME}:/home/ubuntu/data.tar.gz
-        scp -o StrictHostKeyChecking=no -i private_key Dockerfile ${USER_NAME}@${HOSTNAME}:/home/ubuntu/
-    - name: wordPress
-      uses: tarunjangra/ssh-remote-cmd@v1
+    - name: Check out code
+      uses: actions/checkout@v2    
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
       with:
-        command: |
-          mkdir wp-dir
-          
-          sudo tar -xvzf /home/ubuntu/data.tar.gz -C /home/ubuntu/wp-dir/
-          sudo mv docker-compose.yml /home/ubuntu/wp-dir/
-          sudo mv Dockerfile /home/ubuntu/wp-dir/html/
-          
-          cd wp-dir/
-          sudo tar -xvzf /home/ubuntu/data.tar.gz -C /home/ubuntu/wp-dir
-          cd /home/ubuntu/wp-dir/html
-          sudo cp -r /home/ubuntu/wp-dir/html/* /home/ubuntu/wp-dir/wp-content/
-          tar -czvf /home/ubuntu/backup_$(date +%Y-%m-%d_%H-%M-%S).tar.gz /home/ubuntu/wp-dir/wp-content/
-          docker build --no-cache -t wp .
-          docker-compose down
-          docker-compose up -d
-        host: 13.234.204.95
-        user: ubuntu
-        key: ${{ secrets.SSH_KEY}}
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ap-south-1
+        
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1
+      with:
+       skip-logout: true
+
+    - name: Build, tag, and PuSh image to Amazon ECR
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        ECR_REPOSITORY: compose-repo
+        IMAGE_TAG: latest
+      run: |
+        pwd
+        ls
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+        ls
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+    - name: Pull the latest image
+      run: |
+          docker pull 554257238497.dkr.ecr.ap-south-1.amazonaws.com/compose-repo:latest
+    - name: Configure kubectl
+      run: |
+          aws eks update-kubeconfig --region ap-south-1 --name eksclusterdemo
+    - name: Apply Kubernetes Deployment
+      run: |
+          kubectl apply -f wp-pv.yaml
+          kubectl apply -f mysql.yaml
+          kubectl apply -k ./
