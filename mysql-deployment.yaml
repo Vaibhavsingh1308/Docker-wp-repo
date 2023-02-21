@@ -57,9 +57,9 @@ spec:
         - containerPort: 3306
           name: mysql
         volumeMounts:
-        - name: wordpress-mysql
+        - name: wordpress
           mountPath: /var/lib/mysql
       volumes:
-      - name: wordpress-mysql
+      - name: wordpress
         persistentVolumeClaim:
-          claimName: mysql-pv-claim
+          claimName: wp-pv-claim
