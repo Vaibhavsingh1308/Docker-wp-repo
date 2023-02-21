@@ -55,9 +55,9 @@ spec:
               key: password
         ports:
         - containerPort: 3306
-          name: wordpress-mysql
+          name: mysql
         volumeMounts:
-        - name: mysql-persistent-storage
+        - name: wordpress-mysql
           mountPath: /var/lib/mysql
       volumes:
       - name: wordpress-mysql
