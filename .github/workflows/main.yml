@@ -43,5 +43,4 @@ jobs:
           kubectl apply -f wp-pv.yaml
           kubectl apply -f mysql.yaml
           kubectl apply -k ./
-          kubectl apply -f wordpress-deployment.yaml --force
           
