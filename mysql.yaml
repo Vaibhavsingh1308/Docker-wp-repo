@@ -1,7 +1,7 @@
 kind: PersistentVolume
 apiVersion: v1
 metadata:
-  name: wordpress-name
+  name: wordpress-mysql
   labels:
     app: wordpress
 spec:
