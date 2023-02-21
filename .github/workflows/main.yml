@@ -39,7 +39,7 @@ jobs:
           aws eks update-kubeconfig --region ap-south-1 --name eksclusterdemo
     - name: Apply Kubernetes Deployment
       run: |
-          kubectl delete -k ./
+          
           kubectl apply -f wp-pv.yaml
           kubectl apply -f mysql.yaml
           kubectl apply -k ./
