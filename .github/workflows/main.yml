@@ -42,5 +42,6 @@ jobs:
           
           kubectl apply -f wp-pv.yaml
           kubectl apply -f mysql.yaml
+          kubectl apply --force --overwrite -f wordpress-deployment.yaml
           kubectl apply -k ./
           
