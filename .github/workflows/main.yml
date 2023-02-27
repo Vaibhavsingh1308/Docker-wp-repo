@@ -40,3 +40,29 @@ jobs:
     - name: Install Helm
       run: |
         curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
+    - name: Deploy MySQL with Helm
+      run: |
+        helm repo add bitnami https://charts.bitnami.com/bitnami
+        helm install mysql bitnami/mysql \
+          --namespace wordpress \
+          --set auth.rootPassword=password \
+          --set auth.database=wordpress \
+          --set persistence.size=1Gi
+
+    - name: Deploy WordPress with Helm
+      run: |
+        helm repo add bitnami https://charts.bitnami.com/bitnami
+        helm install wordpress bitnami/wordpress \
+          --namespace wordpress \
+          --set wordpressUsername=admin \
+          --set wordpressPassword=password \
+          --set wordpressEmail=admin@example.com \
+          --set mariadb.enabled=false \
+          --set externalDatabase.host=mysql-wordpress.wordpress.svc.cluster.local \
+          --set externalDatabase.user=bn_wordpress \
+          --set externalDatabase.password=bitnami \
+          --set externalDatabase.database=wordpress
+
+    - name: Verify Deployment
+      run: |
+        kubectl get pods -n wordpress
