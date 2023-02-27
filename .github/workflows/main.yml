@@ -37,11 +37,6 @@ jobs:
     - name: Configure kubectl
       run: |
           aws eks update-kubeconfig --region ap-south-1 --name eksclusterdemo
-    - name: Apply Kubernetes Deployment
+    - name: Install Helm
       run: |
-          
-          kubectl apply -f wp-pv.yaml
-          kubectl apply -f mysql.yaml
-          kubectl apply --force --overwrite -f wordpress-deployment.yaml
-          kubectl apply -k ./
-          
+        curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
