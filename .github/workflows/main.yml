@@ -66,6 +66,5 @@ jobs:
 
     - name: Verify Deployment
       run: |
-        helm install wordpress bitnami/mysql
-        helm install wordpress bitnami/wordpress
+        helm install wordpress bitnami
         helm list
