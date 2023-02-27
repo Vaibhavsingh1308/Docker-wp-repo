@@ -66,4 +66,6 @@ jobs:
 
     - name: Verify Deployment
       run: |
-        kubectl get pods -n wordpress
+        helm install wordpress bitnami/mysql
+        helm install wordpress bitnami/wordpress
+        helm list
