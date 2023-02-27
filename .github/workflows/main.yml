@@ -45,6 +45,7 @@ jobs:
         helm repo add bitnami https://charts.bitnami.com/bitnami
         helm install mysql bitnami/mysql \
           --namespace wordpress \
+          --create-namespace \
           --set auth.rootPassword=password \
           --set auth.database=wordpress \
           --set persistence.size=1Gi
