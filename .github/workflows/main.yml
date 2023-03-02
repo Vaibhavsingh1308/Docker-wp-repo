@@ -36,7 +36,7 @@ jobs:
           docker pull 554257238497.dkr.ecr.ap-south-1.amazonaws.com/compose-repo:latest
     - name: Configure kubectl
       run: |
-          aws eks update-kubeconfig --region ap-south-1 --name eksclusterdemo
+          aws eks update-kubeconfig --region ap-south-1 --name eks-cluster
     - name: Install Helm
       run: |
         curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
