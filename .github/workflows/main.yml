@@ -31,4 +31,9 @@ jobs:
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
         ls
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-    
+    - name: Pull the latest image
+      run: |
+          docker pull 537968077530.dkr.ecr.ap-south-1.amazonaws.com/compose-repo:latest
+    - name: Configure kubectl
+      run: |
+          aws eks update-kubeconfig --region ap-south-1 --name eks-cluster
